@@ -4,8 +4,6 @@ pipeline {
       stage('Build') {
             when {
                 anyOf{
-//                     branch 'production'
-//                     branch 'testing'
                     branch 'master'
                 }
             }
@@ -16,14 +14,13 @@ pipeline {
             }
         }
         stage('Push Image') {
-            }
-            steps {
-                withCredentials([string(credentialsId: 'docker-hub-token', variable: 'DOCKER_TOKEN')]) {
-    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_TOKEN"
-}
+               steps {
+//                 withCredentials([string(credentialsId: 'docker-hub-token', variable: 'DOCKER_TOKEN')]) {
+//     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_TOKEN"
+// }
 
-                sh 'docker build -t todo-app-py .'
-                echo "This is Build Based on Docker Image"
+//                 sh 'docker build -t todo-app-py .'
+                echo "This is Push Based on Docker Image"
                 // sh 'mvn package'
             }
         }
@@ -43,5 +40,5 @@ pipeline {
             
 //                 sh "curl --upload-file /home/ubuntu/Projects/java-war-example-HelloWorld/target*.war ${TOMCAT_URL}/manager/deploy?path=sparkjava-hello-world-1.0 -u ${TOMCAT_USER}:${TOMCAT_PASSWORD}"
 //             }
-//         }
+        }
     }
