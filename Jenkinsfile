@@ -6,7 +6,7 @@ pipeline {
                 anyOf{
 //                     branch 'production'
 //                     branch 'testing'
-                    branch 'development'
+                    branch 'master'
                 }
             }
             steps {
