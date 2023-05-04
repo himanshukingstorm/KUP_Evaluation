@@ -26,9 +26,10 @@ pipeline {
       steps {
         sh "docker tag todo-app-py:V.$BUILD_NUMBER himanshukingstorm/todo-app-py:V.$BUILD_NUMBER"
         sh "docker push himanshukingstorm/todo-app-py:V.$BUILD_NUMBER"
-      }
+      
       echo "This is Push Based on Docker Image as Version :V.$BUILD_NUMBER"
-    }
+      }
+      }
   }
 
 }
