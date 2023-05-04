@@ -15,6 +15,19 @@ pipeline {
                 // sh 'mvn package'
             }
         }
+        stage('Push Image') {
+            }
+            steps {
+                withCredentials([string(credentialsId: 'docker-hub-token', variable: 'DOCKER_TOKEN')]) {
+    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_TOKEN"
+}
+
+                sh 'docker build -t todo-app-py .'
+                echo "This is Build Based on Docker Image"
+                // sh 'mvn package'
+            }
+        }
+
 //         stage('Deploy to Production') {
 //             environment {
 //                 TOMCAT_URL = 'http://3.0.176.113:8080'
