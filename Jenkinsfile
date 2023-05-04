@@ -1,5 +1,7 @@
 pipeline {
     agent any
+//     environment{
+//         IMAGE_TAG  = "BUILD_NUMBER"
     stages {
       stage('Build') {
             when {
@@ -8,19 +10,27 @@ pipeline {
                 }
             }
             steps {
-                sh 'docker build -t todo-app-py .'
-                echo "This is Build Based on Docker Image"
+                sh 'docker build -t todo-app-py:V.$BUILD_NUMBER .'
+                echo "This is Build Based on Docker Image version $BUILD_NUMBER"
                 // sh 'mvn package'
             }
         }
-        stage('Push Image') {
+        stage('Login Dockerhub') {
                steps {
                 withCredentials([string(credentialsId: 'kingstorm_dh', variable: 'DOCKER_TOKEN')]) {
                    sh "docker login -u "himanshukingstorm" -p $DOCKER_TOKEN"
-}
-
+                }
                 echo "This is Push Based on Docker Image"
             }
         }
+        stage('Push into Dockerhub') {
+               steps {
+                   sh "docker tag todo-app-py:V.$BUILD_NUMBER himanshukingstorm/todo-app-py:V.$BUILD_NUMBER"
+                   sh "docker push himanshukingstorm/todo-app-py:V.$BUILD_NUMBER"
+                }
+                echo "This is Push Based on Docker Image as Version :V.$BUILD_NUMBER"
+            }
+        }
+        
         }
     }
