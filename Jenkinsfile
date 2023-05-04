@@ -10,7 +10,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'sudo docker build -t todo-app-py .'
+                sh 'docker build -t todo-app-py .'
                 echo "This is Build Based on Docker Image"
                 // sh 'mvn package'
             }
