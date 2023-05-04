@@ -16,8 +16,7 @@ pipeline {
     stage('Login Dockerhub') {
       steps {
         withCredentials([string(credentialsId: 'kingstorm_dh', variable: 'DOCKER_TOKEN')]) {
-          sh "docker login -u "
-          himanshukingstorm " -p $DOCKER_TOKEN"
+          sh "docker login -u himanshukingstorm " -p $DOCKER_TOKEN"
         }
         echo "This is Push Based on Docker Image"
       }
