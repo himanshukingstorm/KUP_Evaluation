@@ -1,31 +1,34 @@
 pipeline {
   agent any
   stages {
-    stage('Unit Test') {
+    stage('Build') {
+      when {
+        anyOf {
+          branch 'master'
+        }
+      }
       steps {
-        sh 'mvn clean test'
+        sh 'docker build -t todo-app-py:V.$BUILD_NUMBER .'
+        echo "This is Build Based on Docker Image version $BUILD_NUMBER"
+        // sh 'mvn package'
       }
     }
-    stage('Deploy Standalone') {
+    stage('Login Dockerhub') {
       steps {
-        sh 'mvn deploy -P standalone'
+        withCredentials([string(credentialsId: 'kingstorm_dh', variable: 'DOCKER_TOKEN')]) {
+          sh "docker login -u "
+          himanshukingstorm " -p $DOCKER_TOKEN"
+        }
+        echo "This is Push Based on Docker Image"
       }
     }
-    stage('Deploy AnyPoint') {
-      environment {
-        ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
-      }
+    stage('Push into Dockerhub') {
       steps {
-        sh 'mvn deploy -P arm -Darm.target.name=local-4.0.0-ee -Danypoint.username=${ANYPOINT_CREDENTIALS_USR}  -Danypoint.password=${ANYPOINT_CREDENTIALS_PSW}'
+        sh "docker tag todo-app-py:V.$BUILD_NUMBER himanshukingstorm/todo-app-py:V.$BUILD_NUMBER"
+        sh "docker push himanshukingstorm/todo-app-py:V.$BUILD_NUMBER"
       }
-    }
-    stage('Deploy CloudHub') {
-      environment {
-        ANYPOINT_CREDENTIALS = credentials('anypoint.credentials')
-      }
-      steps {
-        sh 'mvn deploy -P cloudhub -Dmule.version=4.0.0 -Danypoint.username=${ANYPOINT_CREDENTIALS_USR} -Danypoint.password=${ANYPOINT_CREDENTIALS_PSW}'
-      }
+      echo "This is Push Based on Docker Image as Version :V.$BUILD_NUMBER"
     }
   }
+
 }
