@@ -8,8 +8,8 @@ pipeline {
         }
       }
       steps {
-        sh 'docker build -t todo-app-py:V.$BUILD_NUMBER .'
-        echo "This is Build Based on Docker Image version $BUILD_NUMBER"
+        sh 'docker build -t todo-app-py:V.$BUILD_TAG .'
+        echo "This is Build Based on Docker Image version $BUILD_TAG"
         // sh 'mvn package'
       }
     }
