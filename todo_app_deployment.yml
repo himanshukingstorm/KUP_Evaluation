@@ -28,6 +28,8 @@ metadata:
     run: todo-app
 
 spec:
+  selector:
+    run: todo-app
   type: NodePort
   ports:
     - port: 5000
