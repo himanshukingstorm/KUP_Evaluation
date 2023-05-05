@@ -22,7 +22,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo-app
+      run: todo-app
   template:
     metadata:
       labels:
